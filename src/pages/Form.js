@@ -1,9 +1,12 @@
 import React,{useState} from 'react'
-import '../FormApp.css'
+// import '../FormApp.css'
 import { useForm } from "react-hook-form";
+import {useNavigate } from 'react-router-dom'
+import 'tachyons/css/tachyons.css'
 
 
 function Form() {
+  const history = useNavigate ()
   const [error,setError] = useState(true)
   const { register, handleSubmit, watch, formState: { errors } } = useForm();
   const onSubmit = (data) =>{
@@ -13,9 +16,23 @@ function Form() {
 
   const handleRequest = async (email) =>{
     try{
-      const response = await fetch(`https://acctglobal.myvtex.com.br/api/checkout/pub/profiles?email=${email}`)
+      const options = {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+          'X-VTEX-API-AppKey': 'vtexappkey-acctglobal-ATKTYU',
+          'X-VTEX-API-AppToken': 'ORHUHNHGZQSPCXAINMSAGSVSNUWBFFWRQGJBYFFQOQAANVTVHQEPCRNWVOHNQGATTAYWNZKHHBMPRVERBBTOBHPYTNFJYSZHPGGNXWHIFWHAEXEAJPLPMMRLLADATAJP'
+        }
+      };
+      const response = await fetch(`https://acctglobal.myvtex.com.br/api/checkout/pub/profiles?email=${email}`,options)
       const data = await response.json()
       console.log(data)
+      if(data.userProfile !== ''){
+        history.push('https://google.com')
+      }else{
+        history.push('https://youtube.com')
+      }
     }catch(err){
       console.log(err.message)
     }
@@ -41,41 +58,46 @@ function Form() {
   };
 
   return (
-    <main className="form-container">  
-        <nav className="form-nav">
+    <main className="form-container mw9 ph3 center">  
+        <nav className="bb b--light-gray pv3">
             <strong className="form-nav__logo">Place your logo here</strong>
         </nav>
-        <h1 className="form-title">Finalizar compra</h1>
+        <h1 className="form-title tc">Finalizar compra</h1>
 
-        <h2 className="form-subtitle">Para finalizar a compra, informe seu e-mail</h2>
-        <p className="form-text">Rápido. Fácil. Seguro</p>
+        <h2 className="form-subtitle tc">Para finalizar a compra, informe seu e-mail</h2>
+        <p className="form-text tc">Rápido. Fácil. Seguro</p>
 
-        <form className="form-container__form" onSubmit={handleSubmit(onSubmit)}>
-          <div className="input-container"> 
-          <input onKeyUp={handleError} {...register("email", {required: true, minLength: 10, pattern: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g })} type="email" placeholder="seu@email.com" className="form-container__form-form-input" />
+        <form className="flex justify-center flex-column flex-row-ns pv4" onSubmit={handleSubmit(onSubmit)}>
+          <div className="input-container w-full relative w-50-ns w-100 mb3 mb0-ns pr1"> 
+          <input onKeyUp={handleError} {...register("email", {required: true, minLength: 10, pattern: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g })} type="email" placeholder="seu@email.com" className="ph3 pv3 w-100" />
           {errors.email && <span style={{color: 'red'}}>Insira um email válido</span>}
           {!errors.email && !error 
           
           ?
-          <svg className="input-success" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M438.6 105.4C451.1 117.9 451.1 138.1 438.6 150.6L182.6 406.6C170.1 419.1 149.9 419.1 137.4 406.6L9.372 278.6C-3.124 266.1-3.124 245.9 9.372 233.4C21.87 220.9 42.13 220.9 54.63 233.4L159.1 338.7L393.4 105.4C405.9 92.88 426.1 92.88 438.6 105.4H438.6z"/></svg>
+          <svg className="absolute w1 top-1 right-1" width="25" height="19" viewBox="0 0 25 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M8.4911 18.2766L0.366101 10.1516C-0.122034 9.66351 -0.122034 8.87206 0.366101 8.38387L2.13383 6.6161C2.62196 6.12792 3.41346 6.12792 3.9016 6.6161L9.37499 12.0894L21.0984 0.366101C21.5865 -0.122034 22.378 -0.122034 22.8662 0.366101L24.6339 2.13387C25.122 2.62201 25.122 3.41346 24.6339 3.90165L10.2589 18.2767C9.77069 18.7648 8.97924 18.7648 8.4911 18.2766V18.2766Z" fill="#6CCC81"/>
+          </svg>
           :
           ''
         }
           </div>
          
 
-          <button className="form-container__form-button">Continuar</button>
+          <button style={{cursor: 'pointer'}} className="f6 link dim b bw0 ph3 pv3 dib white bg-dark-green w-20-ns w-100">Continuar</button>
         </form>
 
-        <section className="form-box">
-          <h3 className="form-box__title">Usamos seu e-mail de forma 100% segura para:</h3>
-          <p className="form-box__description">Identificar seu perfil</p>
-          <p className="form-box__description">Notificar sobre o andamento do seu pedido</p>
-          <p className="form-box__description">Gerenciar seu histórico de compras</p>
-          <p className="form-box__description">Acelerar o preenchimento de suas informações</p>
+        <div className="flex justify-center w-100">
+        <section className="light-gray br2 mw6 w-100 ba ph3">
+          <h3 className="f5 green">Usamos seu e-mail de forma 100% segura para:</h3>
+          <p className="black">Identificar seu perfil</p>
+          <p className="black">Notificar sobre o andamento do seu pedido</p>
+          <p className="black">Gerenciar seu histórico de compras</p>
+          <p className="black">Acelerar o preenchimento de suas informações</p>
         </section>
+        </div>
+    
 
-        <footer className="form-footer">  
+        <footer className="mv5 flex justify-center bt b--light-gray">  
           <p className="form-footer__rights">All rights reserved</p>
         </footer>
     </main>

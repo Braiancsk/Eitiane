@@ -1,11 +1,13 @@
 
 import Form from './pages/Form';
+import { Routes, Route } from "react-router-dom";
 
 function App() {
   return (
-    <div className="App">
-      <Form/>
-    </div>
+    <Routes>
+        <Route path="/" element={<Form />} />
+      
+    </Routes>
   );
 }
 
