@@ -2,8 +2,26 @@ import React,{useState} from 'react'
 // import '../FormApp.css'
 import { useForm } from "react-hook-form";
 import {useNavigate } from 'react-router-dom'
-import 'tachyons/css/tachyons.css'
-
+import 'tachyons-border-radius/css/tachyons-border-radius.min.css'
+import 'tachyons-border-widths/css/tachyons-border-widths.min.css'
+import 'tachyons-borders/css/tachyons-borders.min.css'
+import 'tachyons-border-colors/css/tachyons-border-colors.min.css'
+import 'tachyons-display/css/tachyons-display.min.css'
+import 'tachyons-font-weight/css/tachyons-font-weight.min.css'
+import 'tachyons-hovers/css/tachyons-hovers.min.css'
+import 'tachyons-letter-spacing/css/tachyons-letter-spacing.min.css'
+import 'tachyons-links/css/tachyons-links.min.css'
+import 'tachyons-skins/css/tachyons-skins.min.css'
+import 'tachyons-spacing/css/tachyons-spacing.min.css'
+import 'tachyons-text-transform/css/tachyons-text-transform.min.css'
+import 'tachyons-type-scale/css/tachyons-type-scale.min.css'
+import 'tachyons-max-widths/css/tachyons-max-widths.min.css'
+import 'tachyons-widths/css/tachyons-widths.min.css'
+import 'tachyons-utilities/css/tachyons-utilities.min.css'
+import 'tachyons-flexbox/css/tachyons-flexbox.min.css'
+import 'tachyons-text-align/css/tachyons-text-align.min.css'
+import 'tachyons-position/css/tachyons-position.min.css'
+import 'tachyons-coordinates/css/tachyons-coordinates.min.css'
 
 function Form() {
   const history = useNavigate ()
@@ -68,8 +86,8 @@ function Form() {
         <p className="form-text tc">Rápido. Fácil. Seguro</p>
 
         <form className="flex justify-center flex-column flex-row-ns pv4" onSubmit={handleSubmit(onSubmit)}>
-          <div className="input-container w-full relative w-50-ns w-100 mb3 mb0-ns pr1"> 
-          <input onKeyUp={handleError} {...register("email", {required: true, minLength: 10, pattern: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g })} type="email" placeholder="seu@email.com" className="ph3 pv3 w-100" />
+          <div className="input-container w-full relative w-50-ns w-100 mb3 mb0-ns pr3"> 
+          <input onKeyUp={handleError} {...register("email", {required: true, minLength: 10, pattern: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g })} type="email" placeholder="seu@email.com" className="pv3 w-100" />
           {errors.email && <span style={{color: 'red'}}>Insira um email válido</span>}
           {!errors.email && !error 
           
@@ -83,7 +101,7 @@ function Form() {
           </div>
          
 
-          <button style={{cursor: 'pointer'}} className="f6 link dim b bw0 ph3 pv3 dib white bg-dark-green w-20-ns w-100">Continuar</button>
+          <button style={{cursor: 'pointer'}} className="f6 link dim b bw0 ph3 pv3 dib white bg-dark-green w-20-ns w-100 h3">Continuar</button>
         </form>
 
         <div className="flex justify-center w-100">
