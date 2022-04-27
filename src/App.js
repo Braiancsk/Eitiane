@@ -1,10 +1,10 @@
 
-import './FormApp.css';
+import Form from './pages/Form';
 
 function App() {
   return (
     <div className="App">
-      <h1>Hello from React</h1>
+      <Form/>
     </div>
   );
 }
