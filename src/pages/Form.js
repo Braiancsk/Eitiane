@@ -1,7 +1,6 @@
 import React,{useState} from 'react'
 // import '../FormApp.css'
 import { useForm } from "react-hook-form";
-import {useNavigate } from 'react-router-dom'
 import 'tachyons-border-radius/css/tachyons-border-radius.min.css'
 import 'tachyons-border-widths/css/tachyons-border-widths.min.css'
 import 'tachyons-borders/css/tachyons-borders.min.css'
@@ -24,7 +23,6 @@ import 'tachyons-position/css/tachyons-position.min.css'
 import 'tachyons-coordinates/css/tachyons-coordinates.min.css'
 
 function Form() {
-  const history = useNavigate ()
   const [error,setError] = useState(true)
   const { register, handleSubmit, watch, formState: { errors } } = useForm();
   const onSubmit = (data) =>{
@@ -46,11 +44,7 @@ function Form() {
       const response = await fetch(`https://acctglobal.myvtex.com.br/api/checkout/pub/profiles?email=${email}`,options)
       const data = await response.json()
       console.log(data)
-      if(data.userProfile !== ''){
-        history.push('https://google.com')
-      }else{
-        history.push('https://youtube.com')
-      }
+      
     }catch(err){
       console.log(err.message)
     }
