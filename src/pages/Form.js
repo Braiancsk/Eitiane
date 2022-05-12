@@ -23,8 +23,10 @@ import 'tachyons-position/css/tachyons-position.min.css'
 import 'tachyons-coordinates/css/tachyons-coordinates.min.css'
 
 function Form() {
-  const [error,setError] = useState(true)
-  const { register, handleSubmit, watch, formState: { errors } } = useForm();
+
+  const [isSendingEmail, setIsSendingEmail] = useState(false)
+  const [newForm, setNewForm] = useState(false)
+  const { register, handleSubmit } = useForm();
   const onSubmit = (data) =>{
     console.log(data.email)
     handleRequest(data.email)
@@ -32,11 +34,12 @@ function Form() {
 
   const handleRequest = async (email) =>{
     try{
+      setIsSendingEmail(true)
       const options = {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          Accept: 'application/json',
+          'Accept': 'application/json',
           'X-VTEX-API-AppKey': 'vtexappkey-acctglobal-ATKTYU',
           'X-VTEX-API-AppToken': 'ORHUHNHGZQSPCXAINMSAGSVSNUWBFFWRQGJBYFFQOQAANVTVHQEPCRNWVOHNQGATTAYWNZKHHBMPRVERBBTOBHPYTNFJYSZHPGGNXWHIFWHAEXEAJPLPMMRLLADATAJP'
         }
@@ -44,30 +47,24 @@ function Form() {
       const response = await fetch(`https://acctglobal.myvtex.com.br/api/checkout/pub/profiles?email=${email}`,options)
       const data = await response.json()
       console.log(data)
-      
+      setIsSendingEmail(false)
+      setNewForm(true)
     }catch(err){
       console.log(err.message)
+      setIsSendingEmail(false)
     }
    
   }
 
-  const handleError = (e) =>{
-    
-    if(e.target.value !== '' && validateEmail(e.target.value)){
-      console.log('O input está preenchido')
-      setError(false)
-      return
-    }
-    setError(true)
-  }
+  
+  // const validateEmail = (email) => {
+  //   return String(email)
+  //     .toLowerCase()
+  //     .match(
+  //       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+  //     );
+  // };
 
-  const validateEmail = (email) => {
-    return String(email)
-      .toLowerCase()
-      .match(
-        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-      );
-  };
 
   return (
     <main className="form-container mw9 ph3 center">  
@@ -81,22 +78,30 @@ function Form() {
 
         <form className="flex justify-center flex-column flex-row-ns pv4" onSubmit={handleSubmit(onSubmit)}>
           <div className="input-container w-full relative w-50-ns w-100 mb3 mb0-ns pr3"> 
-          <input onKeyUp={handleError} {...register("email", {required: true, minLength: 10, pattern: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g })} type="email" placeholder="seu@email.com" className="pv3 w-100" />
-          {errors.email && <span style={{color: 'red'}}>Insira um email válido</span>}
-          {!errors.email && !error 
-          
-          ?
-          <svg className="absolute w1 top-1 right-1" width="25" height="19" viewBox="0 0 25 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <input {...register("email")} type="email" placeholder="seu@email.com" className="pv3 w-100" required/>
+
+          {/* <svg className="absolute w1 top-1 right-1" width="25" height="19" viewBox="0 0 25 19" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M8.4911 18.2766L0.366101 10.1516C-0.122034 9.66351 -0.122034 8.87206 0.366101 8.38387L2.13383 6.6161C2.62196 6.12792 3.41346 6.12792 3.9016 6.6161L9.37499 12.0894L21.0984 0.366101C21.5865 -0.122034 22.378 -0.122034 22.8662 0.366101L24.6339 2.13387C25.122 2.62201 25.122 3.41346 24.6339 3.90165L10.2589 18.2767C9.77069 18.7648 8.97924 18.7648 8.4911 18.2766V18.2766Z" fill="#6CCC81"/>
           </svg>
-          :
-          ''
-        }
+       */}
+  
           </div>
          
 
-          <button style={{cursor: 'pointer'}} className="f6 link dim b bw0 ph3 pv3 dib white bg-dark-green w-20-ns w-100 h3">Continuar</button>
+          <button type="submit" className="f6 link dim cursor-pointer b bw0 ph3 pv3 dib white bg-dark-green w-20-ns w-100 h3">{isSendingEmail ? 'Enviando...' : 'Continuar'}</button>
         </form>
+
+        {newForm && (
+          <form className="flex justify-center flex-column flex-row-ns pv4" onSubmit={handleSubmit(onSubmit)}>
+          <div className="input-container w-full relative w-50-ns w-100 mb3 mb0-ns pr3"> 
+          <input {...register("email")} type="email" placeholder="seu@email.com" className="pv3 w-100" required/>
+          </div>
+          
+          <button type="submit" className="f6 link dim cursor-pointer b bw0 ph3 pv3 dib white bg-dark-green w-20-ns w-100 h3">{isSendingEmail ? 'Enviando...' : 'Continuar'}</button>
+        </form>
+        )  
+        }
+  
 
         <div className="flex justify-center w-100">
         <section className="light-gray br2 mw6 w-100 ba ph3">
