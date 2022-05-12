@@ -48,12 +48,18 @@ function Form() {
       const data = await response.json()
       console.log(data)
       setIsSendingEmail(false)
-      setNewForm(true)
+      if(data.userProfileId === null){
+        setNewForm(true)
+      }
     }catch(err){
       console.log(err.message)
       setIsSendingEmail(false)
     }
    
+  }
+
+  const onSubmitInputs = (data) => {
+    console.log(data)
   }
 
   
@@ -92,12 +98,30 @@ function Form() {
         </form>
 
         {newForm && (
-          <form className="flex justify-center flex-column flex-row-ns pv4" onSubmit={handleSubmit(onSubmit)}>
-          <div className="input-container w-full relative w-50-ns w-100 mb3 mb0-ns pr3"> 
-          <input {...register("email")} type="email" placeholder="seu@email.com" className="pv3 w-100" required/>
+          <form className="" onSubmit={handleSubmit(onSubmitInputs)}>
+          <div className="flex justify-center flex-column flex-row-ns pv4">
+          <div className="input-container w-full relative w-30-ns w-100 mb3 mb0-ns pr3"> 
+          <input {...register("firstName")} type="text" placeholder="Nome" className="pv3 w-100" required/>
           </div>
-          
+
+          <div className="input-container w-full relative w-30-ns w-100 mb3 mb0-ns"> 
+          <input {...register("lastName")} type="text" placeholder="Sobrenome" className="pv3 w-100" required/>
+          </div>
+          </div>
+
+          <div className="flex justify-center flex-column flex-row-ns pv4">
+          <div className="input-container w-full relative w-30-ns w-100 mb3 mb0-ns pr3"> 
+          <input {...register("cpf")} type="text" placeholder="CPF" className="pv3 w-100" required/>
+          </div>
+
+          <div className="input-container w-full relative w-30-ns w-100 mb3 mb0-ns"> 
+          <input {...register("telefone")} type="text" placeholder="Telefone" className="pv3 w-100" required/>
+          </div>
+          </div>
+     
+          <div className="flex justify-center w-100 mb4">
           <button type="submit" className="f6 link dim cursor-pointer b bw0 ph3 pv3 dib white bg-dark-green w-20-ns w-100 h3">{isSendingEmail ? 'Enviando...' : 'Continuar'}</button>
+          </div>
         </form>
         )  
         }
